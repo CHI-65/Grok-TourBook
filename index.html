@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<link rel="manifest" href="manifest.webmanifest">
+<title>P!NK NA 2023 – Digital Tour Book</title>
+<style>
+  :root { --bg:#0d0d0d; --card:#1a1a1a; --accent:#e10600; --text:#f5f5f5; --muted:#aaa; }
+  * { box-sizing:border-box; }
+  body { margin:0; font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif; background:var(--bg); color:var(--text); font-size:17px; line-height:1.45; }
+  header { background:var(--accent); padding:14px 16px; position:sticky; top:0; z-index:20; }
+  header h1 { margin:0; font-size:20px; }
+  header .sub { font-size:13px; opacity:.9; }
+  .search-bar { padding:10px 16px; background:#111; }
+  .search-bar input { width:100%; padding:12px 14px; border:none; border-radius:10px; background:#222; color:white; font-size:16px; }
+  .nav { display:flex; background:#161616; overflow-x:auto; border-bottom:1px solid #333; }
+  .nav button { flex:1; min-width:72px; padding:12px 6px; background:none; border:none; color:#ccc; font-size:14px; white-space:nowrap; }
+  .nav button.active { color:white; border-bottom:3px solid var(--accent); }
+  .party-bar { display:flex; gap:6px; padding:8px 16px; background:#111; overflow-x:auto; }
+  .party-bar button { padding:6px 12px; border-radius:20px; border:1px solid #444; background:#222; color:#ccc; font-size:13px; }
+  .party-bar button.active { background:var(--accent); border-color:var(--accent); color:white; }
+  .content { padding:14px 16px 40px; }
+  .card { background:var(--card); border-radius:14px; padding:16px; margin-bottom:14px; }
+  .card.today { border-left:4px solid var(--accent); }
+  .card h2 { margin:0 0 8px; font-size:22px; color:#ff6b6b; }
+  .big { font-size:20px; font-weight:600; margin:4px 0 10px; }
+  .row { display:flex; justify-content:space-between; margin:5px 0; gap:8px; }
+  .label { color:var(--muted); flex-shrink:0; }
+  .updated { background:#2a1a00; color:#ffb347; font-size:13px; padding:6px 10px; border-radius:8px; margin:8px 0; display:inline-block; }
+  .contact { padding:10px 0; border-bottom:1px solid #2a2a2a; }
+  .contact:last-child { border:none; }
+  a { color:#6bf; text-decoration:none; }
+  .hidden { display:none !important; }
+  .photo { width:48px; height:48px; border-radius:50%; background:#333; object-fit:cover; margin-right:10px; }
+  .person { display:flex; align-items:center; }
+</style>
+</head>
+<body>
+<header>
+  <h1>P!NK Summer Carnival 2023</h1>
+  <div class="sub">Digital Tour Book • Boston Stretch • Demo</div>
+</header>
+<div class="search-bar">
+  <input type="search" id="search" placeholder="Search names, hotels, cities, venues…" oninput="doSearch()">
+</div>
+<div class="party-bar">
+  <button class="active" onclick="setParty('all')">All</button>
+  <button onclick="setParty('A')">A Party</button>
+  <button onclick="setParty('B')">B Party</button>
+  <button onclick="setParty('C')">C Party</button>
+</div>
+<div class="nav">
+  <button class="active" onclick="show('today')">Today</button>
+  <button onclick="show('itinerary')">Itinerary</button>
+  <button onclick="show('contacts')">People</button>
+  <button onclick="show('day31')">Jul 31</button>
+  <button onclick="show('day1')">Aug 1</button>
+</div>
+<div id="today" class="content">
+  <div class="card today">
+    <div class="updated">UPDATED 2 min ago • Curfew confirmed</div>
+    <h2>Today • Monday July 31</h2>
+    <div class="big">Boston, MA • EDT</div>
+    <p>Show 1 of 2 • Fenway Park</p>
+    <div class="row"><span class="label">Doors</span><span>5:00 PM</span></div>
+    <div class="row"><span class="label">Show</span><span>6:00 PM</span></div>
+    <div class="row"><span class="label">P!NK</span><span>8:30 – 10:30 PM</span></div>
+    <div class="row"><span class="label">Curfew</span><span>10:30 PM (strict)</span></div>
+    <h3>Your Party (C – Production)</h3>
+    <div class="row"><span class="label">Hotel</span><span>Commonwealth Hotel</span></div>
+    <div class="row"><span class="label">Tonight</span><span>Overnight in Boston</span></div>
+  </div>
+  <div class="card">
+    <h2>Tomorrow • Tuesday August 1</h2>
+    <div class="big">Boston, MA • EDT</div>
+    <p>Show 2 of 2 • Fenway Park</p>
+    <div class="row"><span class="label">Doors</span><span>5:00 PM</span></div>
+    <div class="row"><span class="label">P!NK</span><span>8:30 – 10:30 PM</span></div>
+    <p>Same hotels for A/B. C Party moves after show.</p>
+  </div>
+</div>
+<div id="itinerary" class="content hidden">
+  <div class="card">
+    <h2>Boston Stretch</h2>
+    <div class="row"><span>Fri 28</span><span>Day Off • Boston</span></div>
+    <div class="row"><span>Sat 29</span><span>Day Off • Boston</span></div>
+    <div class="row"><span>Sun 30</span><span>Day Off / Load-in • Boston</span></div>
+    <div class="row"><span>Mon 31</span><span>Show 1 • Fenway Park</span></div>
+    <div class="row"><span>Tue 1</span><span>Show 2 • Fenway Park</span></div>
+    <div class="row"><span>Wed 2</span><span>Travel / Day Off • New York</span></div>
+  </div>
+</div>
+<div id="contacts" class="content hidden">
+  <div class="card">
+    <h2>Key People (Demo)</h2>
+    <div class="contact person">
+      <div class="photo" style="background:#444"></div>
+      <div>
+        <strong>Nik Tischler</strong> <span style="color:#aaa;font-size:13px">A Party TM</span><br>
+        <a href="tel:+15550000001">Call</a> • nik.t@example.com
+      </div>
+    </div>
+    <div class="contact person">
+      <div class="photo" style="background:#555"></div>
+      <div>
+        <strong>Ryan Vangel</strong> <span style="color:#aaa;font-size:13px">Local Promoter</span><br>
+        <a href="tel:+16176493226">+1 617-649-3226</a>
+      </div>
+    </div>
+    <div class="contact person">
+      <div class="photo" style="background:#666"></div>
+      <div>
+        <strong>Mike Marchetti</strong> <span style="color:#aaa;font-size:13px">Prod Rep</span><br>
+        <a href="tel:+15083317599">+1 508-331-7599</a>
+      </div>
+    </div>
+  </div>
+</div>
+<div id="day31" class="content hidden">
+  <div class="card">
+    <div class="updated">UPDATED • Strict curfew confirmed 10:30 PM</div>
+    <h2>Monday July 31, 2023</h2>
+    <div class="big">Fenway Park • Show 1 of 2<br>Boston, MA • EDT</div>
+    <h3>Hotels</h3>
+    <strong>A Party</strong> – Four Seasons Boylston<br>200 Boylston St • (617) 338-4400<br>3 mi to venue
+    <br><br>
+    <strong>B Party</strong> – The Ritz-Carlton<br>10 Avery St • (617) 338-4400<br>3 mi to venue
+    <br><br>
+    <strong>C Party</strong> – Commonwealth Hotel<br>500 Commonwealth Ave • (617) 933-5000<br>Also: Hilton Boston Back Bay
+    <h3>Venue</h3>
+    Fenway Park<br>4 Yawkey Way, Boston, MA 02215<br>
+    Promoter: Live Nation • Ryan Vangel<br>
+    Prod Rep: Mike Marchetti
+    <h3>Schedule</h3>
+    Doors 5:00 PM • Show 6:00 PM<br>
+    KidCutUp 6:00–6:15 • Grouplove 6:45–7:15<br>
+    Pat Benatar 7:05–8:00 • P!NK 8:30–10:30<br>
+    Curfew 10:30 PM (very strict)
+    <h3>Tonight</h3>
+    All parties overnight in Boston
+  </div>
+</div>
+<div id="day1" class="content hidden">
+  <div class="card">
+    <h2>Tuesday August 1, 2023</h2>
+    <div class="big">Fenway Park • Show 2 of 2<br>Boston, MA • EDT</div>
+    <h3>Hotels</h3>
+    A & B same as yesterday.<br>
+    C Party: Ace Brooklyn after show (overnight drive)
+    <h3>Venue</h3>
+    Same as July 31
+    <h3>Schedule</h3>
+    Same structure • Curfew 10:30 PM
+    <h3>Tonight</h3>
+    A & B overnight drive to New York (~3.5 hrs)<br>
+    C Party overnight in Brooklyn
+  </div>
+</div>
+<script>
+function show(id) {
+  document.querySelectorAll('.content').forEach(el => el.classList.add('hidden'));
+  document.getElementById(id).classList.remove('hidden');
+  document.querySelectorAll('.nav button').forEach(b => b.classList.remove('active'));
+  event.target.classList.add('active');
+}
+let currentParty = 'all';
+function setParty(p) {
+  currentParty = p;
+  document.querySelectorAll('.party-bar button').forEach(b => b.classList.remove('active'));
+  event.target.classList.add('active');
+}
+function doSearch() {
+  const q = document.getElementById('search').value.toLowerCase();
+  if (q) document.title = 'Searching: ' + q;
+}
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('sw.js');
+}
+</script>
+</body>
+</html>
